@@ -1,9 +1,5 @@
 pipeline {
     agent any
-     tools {
-            maven 'Maven 3.8.7'
-            jdk 'Java 17.0.6'
-        }
     stages {
         stage('Checkout GIT') {
             steps {
