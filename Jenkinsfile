@@ -12,7 +12,7 @@ pipeline {
         }
   stage('MVN CLEAN') {
            steps {
-                       withMaven(maven : 'apache-maven-3.0.2') {
+                       withMaven(maven : 'apache-maven-3.8.7') {
                            bat'mvn clean compile'
                        }
                    }
