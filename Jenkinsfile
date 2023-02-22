@@ -1,28 +1,22 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Checkout GIT') {
             steps {
-              git'https://github.com/Ghazi-Kriaa/SpringCP.git'
-              bat 'mvn -8 compile'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: 'main']],
+                    userRemoteConfigs: [[url: 'https://github.com/Ghazi-Kriaa/SpringCP.git']]
+                ])
             }
         }
-  stage('Test') {
+  stage('MVN CLEAN') {
            steps {
-                           bat'mvn test'
+                       withMaven(maven : 'apache-maven-3.8.7') {
+                           bat'mvn clean compile'
                        }
-                       post{
-                       always{
-                       junit'target/surefire-reports/*.xml'
-                       }
-                       }
+                   }
+               }
 
       }
-      stage('Package'){
-      steps{
-      bat'mvn package'
-      archiveArtifacts'target/*.jar'
-      }
-      }
-    }
     }
