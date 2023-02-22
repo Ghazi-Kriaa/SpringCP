@@ -22,12 +22,8 @@ public class CategorieServiceImpl implements CategorieService {
     }
     @Override
     public Categorie ajout(Categorie c) {
-        if (isIdNull(c)) {
             c.setDateCreation(LocalDate.now());
             return categorieRepository.save(c);
-        } else {
-            throw new IllegalArgumentException("Object ID must be null for creation");
-        }
 
     }
 
@@ -48,9 +44,6 @@ public class CategorieServiceImpl implements CategorieService {
             }
             return null;
         }
-    @Override
-    public boolean isIdNull(Categorie c) {
-        return c.getId() == null;
-    }
+
     }
 

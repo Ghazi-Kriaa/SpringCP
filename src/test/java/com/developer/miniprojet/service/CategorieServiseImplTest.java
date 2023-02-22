@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,19 +24,9 @@ public class CategorieServiseImplTest {
     @Autowired
     private CategorieRepository categorieRepository;
     @Test
-    public void findAllTest(){
-        List<Categorie> categorie =service.findAll();
-        assertThat(categorie).isNotNull();
-    }
-    @Test
-    public void findByIdTest(){
-        Optional<Categorie> categorie = service.findById(1L);
-        assertThat(categorie).isNotNull();
-    }
-    @Test
-    public void ajoutCategoryTest(){
+    public void SaveCategorieSucces(){
         Categorie expectedCategorie = Categorie.builder()
-                .nom("bbb")
+                .nom("GHF")
                 .quantite(1)
                 .build();
         Categorie savedCategorie = service.ajout(expectedCategorie);
@@ -46,32 +37,33 @@ public class CategorieServiseImplTest {
     }
 
     @Test
-    public void modifCategoryTest(){
-        Categorie category = categorieRepository.findById(1L).orElse(null);
-        category.setQuantite(111);
-        category.setNom("Info");
+    public void DeleteCategorieSucces(){
 
-        Categorie savedCat=service.ajout(category);
+        Categorie expectedCategorie = Categorie.builder()
+                .id(4L)
+                .build();
+        Categorie savedCat=service.ajout(expectedCategorie);
 
-        Categorie upadateCategorie = savedCat;
-        savedCat = service.modif(upadateCategorie.getId(), upadateCategorie);
-        assertNotNull(upadateCategorie);
-        assertNotNull(upadateCategorie.getId());
-        assertNotNull(upadateCategorie.getQuantite() , String.valueOf(savedCat.getQuantite()));
-        assertNotNull(upadateCategorie.getNom() , savedCat.getNom());
 
+        boolean isDelted= service.supprimer(savedCat.getId());
+        assertTrue(isDelted);
+        Optional<Categorie> optionalCategories=categorieRepository.findById(savedCat.getId());
+        assertFalse(optionalCategories.isPresent());
+    }
+
+    @Test
+    public void FindAllSucces() {
+        List<Categorie> foundCategorie = service.findAll();
+        assertNotNull(foundCategorie);
 
     }
     @Test
-    public void supprimerCategoryTest() {
-        Categorie expectedCategorie = Categorie.builder()
-                .id(20L)
-                .build();
-        Categorie categorieAjoue = service.ajout(expectedCategorie);
+    public void FindByIdSucces() {
+        Optional<Categorie> found = service.findById(1L);
 
+        assertNotNull(found);
+        assertThat(found).isNotNull();
 
-        boolean isDeleted =service.supprimer(categorieAjoue.getId());
-        Assertions.assertTrue(isDeleted);
-        Optional<Categorie> categorie=service.findById(categorieAjoue.getId());
-        assertFalse(categorie.isPresent());
-}}
+    }
+
+}

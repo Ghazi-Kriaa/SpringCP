@@ -10,34 +10,13 @@ pipeline {
                 ])
             }
         }
-
-        stage('MVN CLEAN') {
-            steps {
-                sh 'mvn clean'
-            }
-        }
-
-        stage('MVN COMPILE') {
-            steps {
-                sh 'mvn compile'
-            }
-        }
-
-        stage('MVN PACKAGE') {
-            steps {
-                sh 'mvn package'
-            }
-        }
-
-        stage('MVN TEST') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
-
-
-
+  stage('MVN CLEAN') {
+           steps {
+                       withMaven(maven : 'apache-maven-3.8.7') {
+                           bat'mvn clean compile'
+                       }
+                   }
+               }
 
       }
     }

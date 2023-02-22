@@ -9,5 +9,5 @@ public interface CategorieService {
     Categorie ajout(Categorie c);
     boolean supprimer(Long id);
     Categorie modif(Long id , Categorie c);
-    boolean isIdNull(Categorie c);
+
 }

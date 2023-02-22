@@ -22,7 +22,7 @@ public class ProduitServiceImpl implements ProduitService {
     CategorieRepository categorieRepository;
     @Override
     public List<Produit> afficherProduitByCategorie(Long idCategorie) {
-        Categorie categorie = categorieService.findById(idCategorie).get();
+        Optional<Categorie> categorie = categorieService.findById(idCategorie);
         return produitRepository.findByCategorie(categorie);
     }
     @Override
