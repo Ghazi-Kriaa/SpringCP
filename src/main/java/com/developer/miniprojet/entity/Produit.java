@@ -22,7 +22,7 @@ public class Produit {
     @ManyToOne
     @JoinColumn(name ="id_categorie")
     private Categorie categorie;
-    @Column(name = "nom", length = 20)
+    @Column(name = "nom")
     private String nom;
     @Column(name = "quantite")
     private int quantite;

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,8 @@ public class ProduitServiceImplTest {
     @Test
     public void SaveProduitSucces(){
         Categorie categories = new Categorie();
+        categories.setNom("aa");
+        categories.setQuantite(120);
         Categorie savedCategorie = categorieService.ajout(categories);
         Produit expectedProduit = Produit.builder()
                 .nom("name prod")
@@ -49,46 +52,50 @@ public class ProduitServiceImplTest {
     }
 
     @Test
-    public void UpdateProduitSucces(){
+    public void testUpdateProduct() {
+        Produit produit = new Produit();
+        Categorie categorie = new Categorie();
+        categorie.setNom("Test Category");
 
-        Categorie categories = categorieRepository.findById(1L).orElse(null);
-        assertNotNull(categories);
-        Produit produit = produitRepository.findById(49L).orElse(null);
+        Categorie savedCategorie = categorieService.ajout(categorie);
+        produit.setCategorie(savedCategorie);
+        Long categorieId = savedCategorie.getId();
 
-        produit.setNom("name prodUpdate1");
-        produit.setQuantite(33);
-        produit.setDisponible(true);
-        produit.setCategorie(categories);
+        Produit produitSaved = service.ajout(produit,categorieId);
 
-        Produit savedProd=service.ajout(produit, produit.getCategorie().getId());
+        produitSaved.setNom("Updated Test Product");
+        produitSaved.setQuantite(20);
+        produitSaved.setDisponible(true);
 
-        Produit upadateProduit = savedProd;
-        savedProd = service.modifier(produit.getId(),upadateProduit, produit.getCategorie().getId());
+        service.modifier(produit.getId(), produitSaved, categorieId);
 
-
-        assertNotNull(upadateProduit);
-        assertNotNull(upadateProduit.getNom() , savedProd.getNom());
-
-
+        Optional<Produit> produitRetrieved = service.findById(produitSaved.getId());
+        assertTrue(produitRetrieved.isPresent());
+        Produit retrievedProduct = produitRetrieved.get();
+        assertEquals("Updated Test Product", retrievedProduct.getNom());
+        assertEquals(20, retrievedProduct.getQuantite());
+        assertEquals(true, retrievedProduct.isDisponible());
     }
 
 
-    @Test
-    public void DeleteProduitSucces(){
-        Categorie categories = new Categorie();
-        Categorie savedCategorie = categorieService.ajout(categories);
-        Produit expectedProduit = Produit.builder()
-                .id(59L)
-                .nom("name prod")
-                .quantite(1)
-                .disponible(true)
-                .categorie(savedCategorie)
-                .build();
-        Produit savedProd=service.ajout(expectedProduit, expectedProduit.getCategorie().getId());
 
-        boolean isDelted= service.supprimer(savedProd.getId());
-        assertTrue(isDelted);
-        Optional<Produit>optionalProduit=produitRepository.findById(savedProd.getId());
+
+    @Test
+    public void testDeleteProduit() throws ParseException {
+        Produit produit = new Produit();
+        Categorie categorie = new Categorie();
+        categorie.setNom("Test");
+
+        Categorie savedCategorie = categorieService.ajout(categorie);
+        produit.setNom("produit test");
+        produit.setDisponible(true);
+        produit.setCategorie(savedCategorie);
+        produit.setQuantite(10);
+        Long categorieId = savedCategorie.getId();
+        produit = service.ajout(produit,categorieId);
+        boolean isDeleted = service.supprimer(produit.getId());
+        assertTrue(isDeleted);
+        Optional<Produit> optionalProduit = produitRepository.findById(produit.getId());
         assertFalse(optionalProduit.isPresent());
     }
 
@@ -98,12 +105,26 @@ public class ProduitServiceImplTest {
         assertThat(produit).isNotNull();
     }
     @Test
-    public void FindByIdSucces() {
-        Optional<Produit> found = service.findById(2L);
+    public void testFindProduitById() {
+        Categorie categorie = new Categorie();
+        categorie.setNom("Test Category");
+        categorie.setQuantite(5);
+        Categorie savedCategorie = categorieService.ajout(categorie);
 
-        assertNotNull(found);
-        assertThat(found).isNotNull();
+        Produit produit = new Produit();
+        produit.setNom("Test Product");
+        produit.setQuantite(10);
+        produit.setCategorie(savedCategorie);
+        Produit savedProduit = service.ajout(produit,savedCategorie.getId());
+
+
+        Optional<Produit> foundProduit = service.findById(savedProduit.getId());
+        assertThat(foundProduit).isNotNull();
 
     }
+
+
+
+
 
 }
