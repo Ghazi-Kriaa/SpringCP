@@ -26,7 +26,7 @@ public class CategorieServiseImplTest {
     @Test
     public void SaveCategorieSucces(){
         Categorie expectedCategorie = Categorie.builder()
-                .nom("jfiv")
+                .nom("mihih")
                 .quantite(1)
                 .build();
         Categorie savedCategorie = service.ajout(expectedCategorie);
