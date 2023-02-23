@@ -18,7 +18,7 @@ pipeline {
              }
            }
           }
-          tage('MVN COMPILE') {
+          stage('MVN COMPILE') {
                               steps {
                                   bat 'mvn compile'
                               }
