@@ -43,7 +43,8 @@ stage('MVN SONARQUBE') {
                 stage('Build docker image'){
                                     steps{
                                          script{
-                                             bat 'docker build -t kriaa/demo .'
+                                             bat 'docker build -t kriaa/springboot.jar'
+ .'
                                          }
                                     }
                         }
@@ -58,7 +59,7 @@ stage('MVN SONARQUBE') {
 
                                      steps {
                                           bat 'echo "Docker is pushing ...."'
-                                          bat 'docker push kriaa/demo'
+                                          bat 'docker push kriaa/springboot.jar'
                                      }
                         }
       }

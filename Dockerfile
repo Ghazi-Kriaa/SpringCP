@@ -1,3 +1,4 @@
 FROM openjdk:17
-EXPOSE 8081
-ADD target/spring-boot-docker.jar spring-boot-docker.jar
+EXPOSE 8080
+ADD target/springboot.jar springboot.jar
+ENTRYPOINT ["java","-jar","/springboot.jar"]
