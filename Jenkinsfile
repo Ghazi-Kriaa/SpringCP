@@ -44,7 +44,7 @@ stage('MVN SONARQUBE') {
                                     steps{
                                          script{
                                              bat 'docker build -t kriaa/springboot.jar'
- .'
+
                                          }
                                     }
                         }
