@@ -1,4 +1,4 @@
 FROM openjdk:17
 EXPOSE 8080
-ADD target/spring.jar spring.jar
-ENTRYPOINT ["java","-jar","/spring.jar"]
+ADD target/backend.jar backend.jar
+ENTRYPOINT ["java","-jar","/backend.jar"]

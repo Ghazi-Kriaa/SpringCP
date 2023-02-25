@@ -40,27 +40,6 @@ stage('MVN SONARQUBE') {
                         bat 'mvn sonar:sonar  -Dsonar.projectKey=SpringCP  -Dsonar.host.url=http://localhost:9000    -Dsonar.login=sqp_b63f6cc38319c01a83e749970e360316f818d767'
                     }
                 }
-                stage('Build docker image'){
-                                    steps{
-                                         script{
-                                             bat 'docker build -t kriaa/springboot.jar'
 
-                                         }
-                                    }
-                        }
-                        stage('Docker login') {
-
-                                     steps {
-                                          bat 'echo "login Docker ...."'
-                                          bat 'docker login -u kriaa -p ghazi1234'
-                                     }
-                        }
-                        stage('Docker push') {
-
-                                     steps {
-                                          bat 'echo "Docker is pushing ...."'
-                                          bat 'docker push kriaa/springboot.jar'
-                                     }
-                        }
       }
     }
