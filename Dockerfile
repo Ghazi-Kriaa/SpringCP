@@ -1,4 +1,4 @@
 FROM openjdk:17
 EXPOSE 8080
-ADD target/backapp.jar.jar backapp.jar
-ENTRYPOINT ["java", "-jar", "backapp.jar"]
+ADD target/springboot.jar springboot.jar
+ENTRYPOINT ["java", "-jar", "springboot.jar"]
